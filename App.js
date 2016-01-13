@@ -18,7 +18,7 @@ Ext.define('CustomApp', {
             model: 'WorkspacePermission',
             autoLoad: true,
             remoteSort: false,
-            fetch:['User','Role','Name', 'UserName','SubscriptionAdmin','Workspace'],
+            fetch:['User','Role','Name', 'UserName','SubscriptionAdmin','Workspace','Disabled'],
             limit: Infinity,
             listeners: {
                 load: this._onDataLoaded,
@@ -37,6 +37,7 @@ Ext.define('CustomApp', {
             if (result.get('User').UserName) {
                 var permission  = {
                     User: result.get('User').UserName,
+                    Disabled: result.get('User').Disabled,
                     Workspace: result.get('Workspace')._refObjectName,
                     Role: result.get('Role')
                 };
@@ -63,6 +64,9 @@ Ext.define('CustomApp', {
                 },
                 {
                     text: 'Role', dataIndex: 'Role'
+                },
+                {
+                    text: 'Disabled', dataIndex: 'Disabled'
                 },
                 {
                     text: 'Workspace', dataIndex: 'Workspace',minWidth: 200
@@ -120,9 +124,21 @@ Ext.define('CustomApp', {
     },
     _getFieldText: function(fieldData) {
         var text;
-        if (fieldData === null || fieldData === undefined || !fieldData.match) {
+        if (fieldData === false){
+            text = 'no';
+        }
+        else if (fieldData === true) {
+            text = 'yes';
+        }
+        else if (fieldData === null || fieldData === undefined || !fieldData.match) {
             text = '';
-        } else if (fieldData._refObjectName) {
+        }
+        
+        else if (fieldData === true || fieldData === false) {
+            text = fieldData;
+        }
+        
+        else if (fieldData._refObjectName) {
             text = fieldData._refObjectName;
         }else {
             text = fieldData;
