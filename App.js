@@ -18,7 +18,7 @@ Ext.define('CustomApp', {
             model: 'WorkspacePermission',
             autoLoad: true,
             remoteSort: false,
-            fetch:['User','Role','Name', 'UserName','SubscriptionAdmin','Workspace','Disabled'],
+            fetch:['User','Role','Name', 'UserName','SubscriptionAdmin','Workspace','Disabled', 'Department'],
             limit: Infinity,
             listeners: {
                 load: this._onDataLoaded,
@@ -39,6 +39,7 @@ Ext.define('CustomApp', {
                     User: result.get('User').UserName,
                     Disabled: result.get('User').Disabled,
                     Workspace: result.get('Workspace')._refObjectName,
+                    Department: result.get('User').Department,
                     Role: result.get('Role')
                 };
             permissions.push(permission);
@@ -67,6 +68,9 @@ Ext.define('CustomApp', {
                 },
                 {
                     text: 'Disabled', dataIndex: 'Disabled'
+                },
+                {
+                    text: 'Department', dataIndex: 'Department'
                 },
                 {
                     text: 'Workspace', dataIndex: 'Workspace',minWidth: 200
